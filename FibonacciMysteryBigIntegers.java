@@ -38,6 +38,8 @@ There is no general formula for the length of the period.
 */
 import java.util.ArrayList;
 import java.math.BigInteger;
+import java.io.*;
+
 
 public class FibonacciMysteryBigIntegers
 {
@@ -46,9 +48,71 @@ public class FibonacciMysteryBigIntegers
    static ArrayList<BigInteger> fibonacciSequenceArrayList = new ArrayList<BigInteger> ();
 
 
+   // *** Copied from my: 00__common_code/Moose_Utils.java
+   // strToFile, StringToFile
+   // Example use:
+   //   Moose_Utils.writeOrAppendStringToFile ("names.dat", "Mike\nFrankie\nBella", false);
+   public static boolean writeOrAppendStringToFile (String fileName, String dataToWrite, boolean appendToFile)
+   {
+      BufferedWriter bw = null;
+      FileWriter     fw = null;
+      boolean result    = false; // ERROR / No data written.
+
+      try
+      {
+         File file = new File(fileName);
+
+         // if file doesnt exist, then create it:
+         if (file.exists() == false)
+         {
+            file.createNewFile();
+         }
+
+         // if appendToFile is true, then append file.
+         fw = new FileWriter(file.getAbsoluteFile(), appendToFile);
+         bw = new BufferedWriter(fw);
+
+         bw.write(dataToWrite);
+
+         bw.close();
+         fw.close();
+
+         //System.out.println("Write to '" + fileName + "' = Done.");
+
+         result  = true; // Data written.
+      }
+      catch (IOException e)
+      {
+         e.printStackTrace();
+         result  = false; // ERROR / No data written.
+      }
+      finally
+      {
+         // Is this *really* necessary ?
+         try
+         {
+            if (bw != null)
+               bw.close();
+
+            if (fw != null)
+               fw.close();
+
+         }
+         catch (IOException ex)
+         {
+            ex.printStackTrace();
+            result  = false; // ERROR / No data written.
+         }
+      }
+
+      return result;
+   } // public static boolean writeOrAppendStringToFile
+
+
+
    public static long displayFibonacciSequenceModN (int modValue)
    {
-      long periodLength = 0;
+      long periodLength = -1; // None found !
 
       int priorNumberModded    = 0;
       int prepriorNumberModded = 0;
@@ -73,7 +137,7 @@ public class FibonacciMysteryBigIntegers
          }
          */
 
-         if ((periodLength == 0) &&   // We have not found the period yet.
+         if ((periodLength  < 0) &&   // We have not found the period yet.
              (k             > 2) &&   // We are NOT at the start of the Fibonacci sequence
              (fibonacciSequenceArrayList.get (k - 1).mod (modValueBigInteger).compareTo (BigInteger.ONE) == 0 ) && // The prior 2 digits were 1
              (fibonacciSequenceArrayList.get (k - 2).mod (modValueBigInteger).compareTo (BigInteger.ONE) == 0 ) )
@@ -121,11 +185,21 @@ public class FibonacciMysteryBigIntegers
       displayFibonacciSequenceModN (10);
 */
 
+      StringAndCounter frequencyArray = new StringAndCounter (true, false); // Sorted list, NOT case sensitive.
+
+
       System.out.println ("\n" + "Fibonacci Sequence Repeating Pattern Lengths for Mod 2, 3, 4, 5, ...");
       for (int k = 2; k < MAX_SIZE / 2; k++)
       {
-         System.out.print (displayFibonacciSequenceModN (k) + ", ");
+         long patternLength = displayFibonacciSequenceModN (k);
+
+         frequencyArray.addStringAndCount ("" + patternLength);
+
+         System.out.print (patternLength + ", ");
       }
       System.out.println ();
+
+      System.out.println (frequencyArray.toString ());
+
    }
 }
