@@ -37,47 +37,78 @@ There is no general formula for the length of the period.
 
 */
 import java.util.ArrayList;
+import java.math.BigInteger;
 
-
-public class FibonacciMystery
+public class FibonacciMysteryBigIntegers
 {
-   static final int MAX_SIZE = 90; // After this, they exceed the MAX Long integer.  i.e. overflow.
-   static ArrayList<Long> fibonacciSequenceArrayList = new ArrayList<Long> ();
+   static final int MAX_SIZE = 20_000; // After this, they exceed the MAX Long integer.  i.e. overflow.
+
+   static ArrayList<BigInteger> fibonacciSequenceArrayList = new ArrayList<BigInteger> ();
 
 
-   public static void displayFibonacciSequenceModN (int modValue)
+   public static long displayFibonacciSequenceModN (int modValue)
    {
-      int periodLength = 0;
+      long periodLength = 0;
+
+      int priorNumberModded    = 0;
+      int prepriorNumberModded = 0;
+
+      BigInteger modValueBigInteger = new BigInteger ("" + modValue);
 
       // Display all MOD modValue:
-      System.out.println ("\n" + "Fibonacci Numbers MOD " + modValue + ":");
+      //System.out.print ("\n" + "Fibonacci Numbers MOD " + modValue + ":");
       for (int k = 0; k < MAX_SIZE; k++)
       {
-         System.out.print ( (fibonacciSequenceArrayList.get (k) % modValue) + ", ");
+         //System.out.print ( (fibonacciSequenceArrayList.get (k) % modValue) + ", ");
+         //System.out.print ( fibonacciSequenceArrayList.get (k).mod (modValueBigInteger) + ", ");
+         /*
+         if (k             > 2)    // We are NOT at the start of the Fibonacci sequence
+         {
+            System.out.print ( fibonacciSequenceArrayList.get (k).mod (modValueBigInteger) +
+               " ( " +
+               fibonacciSequenceArrayList.get (k - 1).mod (modValueBigInteger) +
+               ", " +
+               fibonacciSequenceArrayList.get (k - 2).mod (modValueBigInteger) +
+               ")" + ", ");
+         }
+         */
 
          if ((periodLength == 0) &&   // We have not found the period yet.
              (k             > 2) &&   // We are NOT at the start of the Fibonacci sequence
-             (fibonacciSequenceArrayList.get (k - 1) % modValue == 1) && // The prior 2 digits were 1
-             (fibonacciSequenceArrayList.get (k - 2) % modValue == 1) )
+             (fibonacciSequenceArrayList.get (k - 1).mod (modValueBigInteger).compareTo (BigInteger.ONE) == 0 ) && // The prior 2 digits were 1
+             (fibonacciSequenceArrayList.get (k - 2).mod (modValueBigInteger).compareTo (BigInteger.ONE) == 0 ) )
          {
             periodLength = k - 2;
          }
+
       }
-      System.out.println ();
-      System.out.println ("-> Period Length: " + periodLength);
+      //System.out.println ();
+      //System.out.println (" Period Length = " + periodLength);
+
+      return periodLength;
    }
 
    public static void main (String[] args)
    {
-      fibonacciSequenceArrayList.add (1L );
-      fibonacciSequenceArrayList.add (1L );
+
+      System.out.println ("\n" + "Fibonacci Sequence: generating the first " + MAX_SIZE + " numbers ...");
+
+      fibonacciSequenceArrayList.add (new BigInteger ("1") );
+      fibonacciSequenceArrayList.add (new BigInteger ("1") );
 
       for (int k = 2; k < MAX_SIZE; k++)
       {
-         fibonacciSequenceArrayList.add (fibonacciSequenceArrayList.get(k - 1) +
-                                         fibonacciSequenceArrayList.get(k - 2) );
-      }
+         if (k % 1000 == 0)
+            System.out.print (".");
+         BigInteger nextNum = new BigInteger ("" + fibonacciSequenceArrayList.get(k - 1) );
+         nextNum = nextNum.add (fibonacciSequenceArrayList.get(k - 2) );
 
+         fibonacciSequenceArrayList.add (nextNum );
+      }
+      System.out.println ("\n" + "-> DONE !");
+
+
+/*
       System.out.println ("\n" + "Fibonacci Numbers:");
       for (int k = 0; k < MAX_SIZE; k++)
       {
@@ -85,10 +116,16 @@ public class FibonacciMystery
       }
       System.out.println ();
 
-
       displayFibonacciSequenceModN (7);
       displayFibonacciSequenceModN (5);
       displayFibonacciSequenceModN (10);
+*/
 
+      System.out.println ("\n" + "Fibonacci Sequence Repeating Pattern Lengths for Mod 2, 3, 4, 5, ...");
+      for (int k = 2; k < MAX_SIZE / 2; k++)
+      {
+         System.out.print (displayFibonacciSequenceModN (k) + ", ");
+      }
+      System.out.println ();
    }
 }
