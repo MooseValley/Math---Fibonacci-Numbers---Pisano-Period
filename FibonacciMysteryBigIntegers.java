@@ -1,4 +1,20 @@
 /*
+ Author: Mike O'Malley
+ Source File: FibonacciMysteryBigIntegers.java
+ Description: Explore the Fibonacci Mystery and more.
+ Inspiration: Fibonacci Mystery - Numberphile, https://www.youtube.com/watch?v=Nu-lW-Ifyec
+ GitHub:      https://github.com/MooseValley/Math---Fibonacci-Mystery
+
+Ammendment History
+Ver   Date        Author    Details
+----- ----------- --------  ----------------------------------------------------
+0.001 05-Apr-2021  Mike O    Created.  Works great, but limited to Long integers.
+0.002 05-Apr-2021  Mike O    Change over to BigIntegers.
+0.003 05-Apr-2021  Mike O    Calculate frequency of Period (Pattern Length) numbers.
+0.004 05-Apr-2021  Mike O    Write all output to file: 'output.txt'.
+
+*/
+/*
 https://www.youtube.com/watch?v=Nu-lW-Ifyec
 Fibonacci Mystery - Numberphile
 MoosesValley
@@ -154,8 +170,38 @@ public class FibonacciMysteryBigIntegers
 
    public static void main (String[] args)
    {
+      // NOTE: This program needs to use x64 Java runtime.
+      // Data too big for x32 bit.  StringBuilder runs out of space.
+
+      StringBuilder sb    = new StringBuilder();
+
+      sb.append ("\n");
+      sb.append ("----------------------------------------------------------------" + "\n");
+      sb.append ("Fibonacci Mystery Analysis - by Moose OMalley" + "\n");
+      sb.append ("v0.04" + "\n");
+      sb.append ("\n");
+      sb.append ("GitHub: https://github.com/MooseValley/Math---Fibonacci-Mystery"  + "\n");
+      sb.append ("----------------------------------------------------------------" + "\n");
+      sb.append ("\n");
+
+      sb.append ("NOTE: This program needs to use x64 Java runtime." + "\n");
+      sb.append ("      Data too big for x32 bit.  StringBuilder runs out of space." + "\n");
+      sb.append ("\n");
+
+      sb.append ("java.version:    " + System.getProperty("java.version")           + "\n");
+      sb.append ("32/64 bit:        x" + System.getProperty ("sun.arch.data.model") + "\n");
+      sb.append ("java.vendor:     " + System.getProperty("java.vendor")            + "\n");
+      sb.append ("java.vendor.url: " + System.getProperty("java.vendor.url")        + "\n");
+      System.out.println(sb.toString() );
+
+
+
+      // *** Part 1: generate Fibonacci Sequence numbers
 
       System.out.println ("\n" + "Fibonacci Sequence: generating the first " + MAX_SIZE + " numbers ...");
+      sb.append ("\n");
+      sb.append ("\n");
+      sb.append ("Fibonacci Sequence: generating the first " + MAX_SIZE + " numbers ..." + "\n");
 
       fibonacciSequenceArrayList.add (new BigInteger ("1") );
       fibonacciSequenceArrayList.add (new BigInteger ("1") );
@@ -163,13 +209,19 @@ public class FibonacciMysteryBigIntegers
       for (int k = 2; k < MAX_SIZE; k++)
       {
          if (k % 1000 == 0)
-            System.out.print (".");
+            System.out.print ("."); // Print "." every 1,000 so I know all is OK, because things slow down for big numbers.
+
          BigInteger nextNum = new BigInteger ("" + fibonacciSequenceArrayList.get(k - 1) );
          nextNum = nextNum.add (fibonacciSequenceArrayList.get(k - 2) );
 
          fibonacciSequenceArrayList.add (nextNum );
+
+         //sb.append (nextNum.toString() + ", ");
       }
       System.out.println ("\n" + "-> DONE !");
+      //sb.append ("\n");
+      sb.append ("-> Not output to reduce 'output.txt' file size." + "\n");
+      sb.append ("-> DONE !" + "\n");
 
 
 /*
@@ -185,21 +237,52 @@ public class FibonacciMysteryBigIntegers
       displayFibonacciSequenceModN (10);
 */
 
+
+      // *** Part 2: determine Period Lengths (Repeating Pattern Lengths)
+
       StringAndCounter frequencyArray = new StringAndCounter (true, false); // Sorted list, NOT case sensitive.
 
-
-      System.out.println ("\n" + "Fibonacci Sequence Repeating Pattern Lengths for Mod 2, 3, 4, 5, ...");
+      System.out.println ("\n" + "Fibonacci Sequence Repeating Pattern Lengths for Mod 2, 3, 4, 5, ... " + (MAX_SIZE / 2) );
+      sb.append ("\n");
+      sb.append ("Fibonacci Sequence Repeating Pattern Lengths for Mod 2, 3, 4, 5, ... " + (MAX_SIZE / 2) + "\n");
       for (int k = 2; k < MAX_SIZE / 2; k++)
       {
+         if (k % 1000 == 0)
+            System.out.print ("."); // Print "." every 1,000 so I know all is OK, because things slow down for big numbers.
+
          long patternLength = displayFibonacciSequenceModN (k);
 
          frequencyArray.addStringAndCount ("" + patternLength);
 
-         System.out.print (patternLength + ", ");
+         //System.out.print (patternLength + ", ");
+         sb.append (patternLength + ", ");
       }
+      sb.append ("\n");
+      sb.append ("-> DONE !" + "\n");
+      System.out.println ("\n" + "-> DONE !");
+
+
+      // *** Part 3: Period Lengths (Repeating Pattern Lengths) Frequency analysis
+
+      System.out.println ("\n" + "Pattern Length Frequency:" );
+      sb.append ("\n");
+      sb.append ("Pattern Length Frequency:" + "\n");
+      //System.out.println (frequencyArray.toString ());
+      sb.append ("\n");
+      sb.append (frequencyArray.toString () + "\n");
+      sb.append ("\n");
+      sb.append ("-> DONE !" + "\n");
+      sb.append ("\n");
+      System.out.println ("-> DONE !");
       System.out.println ();
 
-      System.out.println (frequencyArray.toString ());
+
+      // *** Part 99: Write all output to file.
+
+      writeOrAppendStringToFile ("output.txt", sb.toString(), false);
+      System.out.println ();
+      System.out.println ("All output written to file: 'output.txt'.");
+      System.out.println ();
 
    }
 }
