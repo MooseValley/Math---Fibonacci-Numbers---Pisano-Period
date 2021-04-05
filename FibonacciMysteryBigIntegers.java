@@ -21,6 +21,10 @@ MoosesValley
 Mon, 05-Apr-2021, 11:19 AM
 The Fibonacci Sequence sure has hidden depths.  Fascinating video !  Thank you !!
 
+MoosesValley
+Mon, 05-Apr-2021, 12:47 PM
+As happens when I watch a Numberphile or Computerphile video, my OCD has kicked in (again) ... and I just have to write my own code to explore everything in the video (and more).  Written a program to generate the 1st 20K+ Fib numbers and determine the Period Lengths for MOD 2, 3, 4, 5, ...  and finding some interesting results.  Also doing a frequency analysis of the Pattern lengths ... and finding more interesting results.  For example, most numbers appear in the list of Pattern Lengths only once, but some numbers appear very frequently.  e.g. 240 appears 219 times, 360 appears 169 times, and so on (for the numbers / lists I have generated so far).  Wonder why ?  Probably nothing that hasn't been found / seen before, but sure is interesting for me at least.  Anyway, uploading my Java code and results to Github if anyone else is interested.
+
 
 https://en.wikipedia.org/wiki/Fibonacci
 Fibonacci (c. 1170 – 1240–50) also known as Leonardo Bonacci, Leonardo of Pisa, or Leonardo Bigollo Pisano.
