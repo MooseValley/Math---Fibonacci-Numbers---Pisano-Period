@@ -4,6 +4,11 @@ Math - Fibonacci Numbers - Pisano Period
 30-Apr-2021: Rename folder, extract Notes and Info to separate text file, re-watch video and add some extra points and examples
 
 
+https://www.youtube.com/watch?v=Nu-lW-Ifyec
+Fibonacci Mystery - Numberphile
+Sep 19, 2013
+Dr James Grime on the Pisano Period - a seemingly strange property of the Fibonacci Sequence.
+
 
 https://www.youtube.com/watch?v=Nu-lW-Ifyec
 Fibonacci Mystery - Numberphile
