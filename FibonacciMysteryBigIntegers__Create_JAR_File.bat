@@ -15,7 +15,7 @@ REM "jar.exe" cfm "FibonacciMysteryBigIntegers.jar" MANIFEST.MF *.class
 "C:\Program Files\AdoptOpenJDK\jdk-8.0.275.1-hotspot\bin\jar.exe" cfm "FibonacciMysteryBigIntegers.jar" MANIFEST.MF *.class
 
 REM
-del *.class
+del /q *.class
 
 :END
 echo .
